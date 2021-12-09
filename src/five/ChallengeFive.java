@@ -16,7 +16,7 @@ public class ChallengeFive {
 
     public static void main(String[] args) {
 
-        try (Scanner scanner = new Scanner(new FileReader("resources/test.txt"))){
+        try (Scanner scanner = new Scanner(new FileReader("resources/coordinates.txt"))){
             while(scanner.hasNextLine()) {
                 String line = scanner.nextLine().replace(",", " ");
                 line = line.replace("-> ", "");
@@ -32,7 +32,7 @@ public class ChallengeFive {
 
         int size = getMinAndMax() + 1;
         map = new int[size][size];
-        test();
+        fillMap();
         for (int[] column : map) {
             for (int row : column) {
                 System.out.print(row + " ");
@@ -54,8 +54,8 @@ public class ChallengeFive {
         return Math.max(yMax, xMax);
     }
 
-    private static void test() {
-        for (int i = 0; i < 10; i++) {
+    private static void fillMap() {
+        for (int i = 0; i < 500; i++) {
             if (X_1.get(i).equals(X_2.get(i))) {
                 int yMin = Math.min(Y_1.get(i), Y_2.get(i));
                 for (int j = yMin; j <= Math.max(Y_1.get(i), Y_2.get(i)) ; j++) {
@@ -67,7 +67,12 @@ public class ChallengeFive {
                     map[Y_1.get(i)][j]++;
                 }
             } else {
-
+                int x = X_1.get(i) < X_2.get(i) ? 1 : -1;
+                int y = Y_1.get(i) < Y_2.get(i) ? 1 : -1;
+                int range = Math.abs(X_1.get(i) - X_2.get(i));
+                for (int j = 0; j <= range; j++) {
+                    map[Y_1.get(i) +  (y * j)][X_1.get(i) + (x * j)]++;
+                }
             }
         }
     }

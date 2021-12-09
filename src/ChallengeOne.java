@@ -1,9 +1,12 @@
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class ChallengeOne {
 
@@ -11,13 +14,23 @@ public class ChallengeOne {
     private static int currentMeasurement;
     private static int count = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         partOne();
         count = 0;
         partTwo();
     }
 
-    private static void partOne() {
+    private static void partOne() throws IOException {
+//        AtomicInteger couunt = new AtomicInteger();
+//        Files.readAllLines(Path.of("resources/measurements.txt"))
+//                .stream()
+//                .map(Integer::valueOf)
+//                .reduce((a, b) -> {
+//                    if(a < b) couunt.getAndIncrement();
+//                    return b;
+//                });
+//        System.out.println("DAVID NINJA:   " + couunt.get());
+
         try(Scanner scanner = new Scanner(new FileReader("resources/measurements.txt"))) {
             previousMeasurement = scanner.nextInt();
             while (scanner.hasNextLine()) {
