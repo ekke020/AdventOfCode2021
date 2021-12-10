@@ -2,50 +2,49 @@ package six;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ChallengeSix {
 
-    private static List<AtomicLong> lanternFish = new ArrayList<>();
-    private static long[] fishArray = new long[9];
+    private static final long[] fishArray = new long[9];
+    private static long deadFish = 0;
 
     public static void main(String[] args) {
-        try(Scanner scanner = new Scanner(new FileReader("resources/test.txt"))) {
+        try(Scanner scanner = new Scanner(new FileReader("resources/fishes.txt"))) {
             while (scanner.hasNextLine()) {
                 String[] line = scanner.nextLine().split(",");
-                Arrays.stream(line).forEach(num -> lanternFish.add(new AtomicLong(Integer.parseInt(num))));
+                Arrays.asList(line).forEach(amount -> fishArray[Integer.parseInt(amount)] += 1);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         for (int i = 0; i < 256; i++) {
-            scanFishes();
+            shiftFish();
+            createNewFish();
         }
-        System.out.println(lanternFish.size());
+        calcValue();
     }
 
-    private static void arrayTest() {
-        for (AtomicLong fish : lanternFish) {
-            fishArray[fish.intValue()] = fish.get();
+    private static void calcValue() {
+        long value = 0;
+        for (long l : fishArray) {
+            value += l;
         }
+        System.out.println("Current value: " + value);
     }
 
-    private static void scanFishes() {
-        AtomicInteger count = new AtomicInteger();
-        lanternFish.forEach(AtomicLong::decrementAndGet);
-        lanternFish.forEach(age -> {
-            if (age.get() < 0) {
-                count.incrementAndGet();
-                age.set(6);
-            }
-        });
-        for (int i = 0; i < count.get(); i++) {
-            lanternFish.add(new AtomicLong(8));
-        }
+    private static void shiftFish() {
+        long[] newArr = new long[9];
+        deadFish = fishArray[0];
+        System.arraycopy(fishArray, 1, newArr, 0, 8);
+        System.arraycopy(newArr, 0, fishArray, 0, 9);
     }
+
+    private static void createNewFish() {
+        fishArray[8] = deadFish;
+        fishArray[6] += deadFish;
+    }
+
 }
