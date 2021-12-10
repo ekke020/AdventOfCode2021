@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ChallengeSix {
 
     private static List<AtomicLong> lanternFish = new ArrayList<>();
+    private static long[] fishArray = new long[9];
 
     public static void main(String[] args) {
         try(Scanner scanner = new Scanner(new FileReader("resources/test.txt"))) {
@@ -26,6 +27,12 @@ public class ChallengeSix {
             scanFishes();
         }
         System.out.println(lanternFish.size());
+    }
+
+    private static void arrayTest() {
+        for (AtomicLong fish : lanternFish) {
+            fishArray[fish.intValue()] = fish.get();
+        }
     }
 
     private static void scanFishes() {
