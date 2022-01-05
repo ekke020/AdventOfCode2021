@@ -3,3 +3,4 @@ out/
 AdventOfCode2021.iml
 .git
 .DS_Store
+resources/test.txt
