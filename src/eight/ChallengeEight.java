@@ -2,16 +2,12 @@ package eight;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
+import java.util.*;
 
 public class ChallengeEight {
 
-    private static final HashMap<String[], String[]> ENTRIES = new HashMap<>();
+    private static final List <String[]> ENTRIES = new ArrayList<>();
+    private static final List <Integer> ENTRIES_VALUES = new ArrayList<>();
     private static final String ZERO = "cagedb";
     private static final String ONE = "ab";
     private static final String TWO = "gcdfa";
@@ -26,27 +22,41 @@ public class ChallengeEight {
     private static int total;
 
     public static void main(String[] args) {
-        try(Scanner scanner = new Scanner(new FileReader("resources/test.txt"))) {
-            while(scanner.hasNextLine()) {
-                String[] parts = scanner.nextLine().split("[|]");
-                ENTRIES.put(parts[0].trim().split(" "), parts[1].trim().split(" "));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        for (int i = 0; i < CODES.length; i++) {
-            if(test1("bad")) {
-
-            }
-        }
+//        try(Scanner scanner = new Scanner(new FileReader("resources/test.txt"))) {
+//            while(scanner.hasNextLine()) {
+//                String[] parts = scanner.nextLine().split("[|]");
+//                ENTRIES.add(parts[1].trim().split(" "));
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        for (String[] entry : ENTRIES) {
+//            for (String pattern : entry) {
+//                for (String code : CODES) {
+//                    if (isTargetInPattern(pattern, code)) {
+//                        System.out.println(code);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+        List<Double> doubleList = new ArrayList<>(Arrays.asList(1.1,1.2,1.4,0.5));
+        double sum = doubleList.stream()
+                .mapToDouble(Double::intValue)
+                .sum();
+//        sum = 0;
+//        for (Double aDouble : doubleList) {
+//            sum += aDouble;
+//        }
+        System.out.println(sum);
     }
 
-    private static void test() {
-        for(String[] output : ENTRIES.values()) {
-            Stream.of(output).forEach(ChallengeEight::addValue);
-        }
-    }
+//    private static void test() {
+//        for(String[] output : ENTRIES.values()) {
+//            Stream.of(output).forEach(ChallengeEight::addValue);
+//        }
+//    }
 
     private static void addValue(String entry) {
         if (entry.length() == 2) {
@@ -76,13 +86,15 @@ public class ChallengeEight {
         return 0;
     }
 
-    private static boolean test1(String pattern) {
-        char[] charSearch = pattern.toCharArray();
+    private static boolean isTargetInPattern(String pattern, String target) {
+        char[] targetChars = target.toCharArray();
+        char[] patternChars = pattern.toCharArray();
+
         boolean isPresent = false;
-        for(int i=0; i<charSearch.length; i++) {
-            char chr = pattern.charAt(i);
-            for(int j = 0; j < pattern.length(); j++) {
-                if(charSearch[j] == chr) {
+
+        for (char targetChar : targetChars) {
+            for (char patternChar : patternChars) {
+                if (targetChar == patternChar) {
                     isPresent = true;
                     break;
                 }
@@ -90,7 +102,9 @@ public class ChallengeEight {
             if (!isPresent) {
                 return false;
             }
+            isPresent = false;
         }
         return true;
     }
+
 }
