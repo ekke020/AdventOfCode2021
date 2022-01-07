@@ -1,52 +1,43 @@
 package eleven;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ChallengeEleven {
 
-    private static Octopus[][] octopusList = new Octopus[5][5];
+    private static final List<List<Octopus>> OCTOPUS_LIST = new ArrayList<>();
 
     public static void main(String[] args) {
-        Octopus[] arg = null;
         try {
-            arg = Files.lines(Path.of("resources/test.txt"))
+            List<Octopus> octopuses = Files.lines(Path.of("resources/test.txt"))
                     .map(e -> e.split(""))
                     .flatMap(Arrays::stream)
                     .mapToInt(Integer::valueOf)
                     .mapToObj(Octopus::new)
-                    .toArray(Octopus[]::new);
+                    .toList();
+            for (int i = 0; i < 25; i+= 5) {
+                OCTOPUS_LIST.add(octopuses.subList(i, i + 5));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int row = 0;
-        int col = 0;
-        for (Octopus octopus : arg) {
-            octopusList[row][col++] = octopus;
-            if (col == 5) {
-                row++;
-                col = 0;
-            }
-        }
-//        System.out.println(Arrays.deepToString(octopusList));
+        printLevelMap();
+        increaseLevelByOne();
         printLevelMap();
     }
 
     private static void increaseLevelByOne() {
-        Arrays.stream(octopusList)
-                .flatMap(Arrays::stream)
+        OCTOPUS_LIST.stream()
+                .flatMap(List::stream)
                 .forEach(Octopus::incrementLevel);
     }
 
     private static void printLevelMap() {
-        for (Octopus[] octopi : octopusList) {
+        for (List<Octopus> octopi : OCTOPUS_LIST) {
             for (Octopus octopus : octopi) {
                 System.out.print(octopus.level + " ");
             }
